@@ -4,12 +4,13 @@ import { initializeApp } from 'firebase/app'
 import { getMessaging, getToken } from 'firebase/messaging'
 import Image from 'next/image'
 import styles from './page.module.css'
-import { useInstallPwa, useSyncLogToScreen } from './utils'
+import { useInstallPwa, useSyncLogToScreen, useNotification } from './utils'
 
 
 export default function Home() {
   const { logs } = useSyncLogToScreen()
   const { handlePwaInstall } = useInstallPwa()
+  const { requestPermission } = useNotification()
 
   React.useEffect(() => {
     const firebaseConfig = {
