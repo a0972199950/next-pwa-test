@@ -6,10 +6,7 @@ console.log('process.env.NODE_ENV: ', process.env.NODE_ENV)
 
 const nextConfig = {
   reactStrictMode: false,
-  swcMinify: true,
-  compiler: {
-    removeConsole: process.env.NODE_ENV !== 'development',
-  },
+  swcMinify: true
 }
 
 const withPwa = nextPwa({
