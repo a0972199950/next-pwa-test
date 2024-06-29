@@ -1,7 +1,7 @@
 'use client'
 import * as React from 'react'
 import { initializeApp } from 'firebase/app'
-import { getMessaging, getToken } from 'firebase/messaging'
+import { getMessaging, getToken, onMessage } from 'firebase/messaging'
 import Image from 'next/image'
 import styles from './page.module.css'
 import { useInstallPwa, useSyncLogToScreen, useNotification } from './utils'
@@ -25,6 +25,7 @@ export default function Home() {
     // Initialize Firebase
     const app = initializeApp(firebaseConfig)
     const messaging = getMessaging(app)
+    
     getToken(messaging, { vapidKey: 'BBH7G9KhJS3nea7V9P0tWFrqfcLBpdGrU39Y7Eq__FTHzzdxQUdtQRMILmRsLCdaiWFouY3pyvbA6pSk6O-GYGE' }).then((currentToken) => {
       if (currentToken) {
         console.log('裝置 token: ', currentToken)
@@ -36,7 +37,12 @@ export default function Home() {
     }).catch((err) => {
       console.log('註冊 firebase sw 發生錯誤', err)
       // ...
-    })    
+    })
+
+    onMessage(messaging, (payload) => {
+      console.log('Message received. ', payload)
+      // ...
+    })
   }, [])
 
   return (
