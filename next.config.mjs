@@ -1,5 +1,6 @@
 /** @type {import('next').NextConfig} */
 import nextPwa from 'next-pwa'
+import fs from 'fs'
 
 console.log('process.env.NODE_ENV: ', process.env.NODE_ENV)
 

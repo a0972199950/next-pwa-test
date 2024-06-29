@@ -1,7 +1,65 @@
+'use client'
+import * as React from 'react'
 import Image from 'next/image'
 import styles from './page.module.css'
 
+interface BeforeInstallPromptEvent extends Event {
+  readonly platforms: string[];
+  readonly userChoice: Promise<{
+    outcome: 'accepted' | 'dismissed';
+    platform: string;
+  }>;
+  prompt(): Promise<void>;
+}
+
 export default function Home() {
+  const [deferredPrompt , setDeferredPrompt] = React.useState<null | BeforeInstallPromptEvent>(null)
+
+  React.useLayoutEffect(() => {
+    window.addEventListener('beforeinstallprompt', (e: Event) => {
+      e.preventDefault()
+      setDeferredPrompt(e as BeforeInstallPromptEvent)
+    })
+  }, [])
+
+  const handlePwaInstall = () => {
+    console.log('點擊安裝 PWA')
+
+    if (!deferredPrompt) {
+      console.log('A2HS 尚未出現' + Date.now())
+      return
+    }
+
+    deferredPrompt.prompt()
+
+    deferredPrompt.userChoice.then((choiceResult) => {
+      if (choiceResult.outcome === 'accepted') {
+        console.log('使用者同意安裝 PWA')
+      } else {
+        console.log('使用者拒絕安裝 PWA')
+      }
+      
+      setDeferredPrompt(null)
+    })
+  }
+
+  const [logs, setLogs] = React.useState<string[]>(['初始化完成'])
+
+  const pushLog = (...msgs: string[]) => {
+    setLogs((val) => ([
+      ...val,
+      ...msgs.map(msg => `[${Date.now()}] ${msg}`)
+    ]))
+  }
+
+  React.useEffect(() => {
+    const _log = console.log
+    console.log = (...msgs) => {
+      pushLog(...msgs)
+      _log(...msgs)
+    }
+  }, [])
+
   return (
     <main className={styles.main}>
       <div className={styles.description}>
@@ -37,20 +95,25 @@ export default function Home() {
           height={37}
           priority
         />
+
+        <ul className={styles.logs}>
+          {
+            logs.map((log, index) => (
+              <li key={index}>{ log }</li>
+            ))
+          }
+        </ul>
       </div>
 
       <div className={styles.grid}>
-        <a
-          href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
+        <button
           className={styles.card}
-          target="_blank"
-          rel="noopener noreferrer"
+          onClick={() => handlePwaInstall()}
         >
           <h2>
-            Docs <span>-&gt;</span>
+            安裝 PWA
           </h2>
-          <p>Find in-depth information about Next.js features and API.</p>
-        </a>
+        </button>
 
         <a
           href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"

@@ -75,6 +75,7 @@
 
 .center {
   display: flex;
+  flex-direction: column;
   justify-content: center;
   align-items: center;
   position: relative;
@@ -103,6 +104,17 @@
   position: absolute;
   filter: blur(45px);
   transform: translateZ(0);
+}
+
+.logs {
+  width: 80vw;
+  height: 300px;
+  overflow-y: scroll;
+  border: 1px white solid;
+  border-radius: 4px;
+  margin-top: 16px;
+  padding: 8px;
+  list-style: none;
 }
 
 .logo {
