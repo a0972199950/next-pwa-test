@@ -25,7 +25,7 @@ export default function Home() {
     // Initialize Firebase
     const app = initializeApp(firebaseConfig)
     const messaging = getMessaging(app)
-    getToken(messaging, {vapidKey: 'fOW7zvkCQYhBiz2-pi-PBY2wtoaWkNYJJSOYuDxsWyo'}).then((currentToken) => {
+    getToken(messaging, { vapidKey: 'BBH7G9KhJS3nea7V9P0tWFrqfcLBpdGrU39Y7Eq__FTHzzdxQUdtQRMILmRsLCdaiWFouY3pyvbA6pSk6O-GYGE' }).then((currentToken) => {
       if (currentToken) {
         console.log('裝置 token: ', currentToken)
       } else {
