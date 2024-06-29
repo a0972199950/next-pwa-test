@@ -71,6 +71,8 @@ export const useNotification = () => {
   }, [])
   
   const requestPermission = () => {
+    console.log('requestPermission')
+
     if (Notification.permission === 'granted') {
       console.log('您已開啟通知權限')
       return
@@ -82,8 +84,14 @@ export const useNotification = () => {
   }
 
   const pushNotification = () => {
-    new Notification('我是一則通知')
     console.log('pushNotification')
+    
+    try {
+      new Notification('我是一則通知')
+      console.log('彈出通知成功')
+    } catch {
+      console.log('彈出通知失敗')
+    }
   }
 
   return { requestPermission, pushNotification }
