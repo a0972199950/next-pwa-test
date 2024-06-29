@@ -1,14 +1,42 @@
 'use client'
 import * as React from 'react'
+import { initializeApp } from 'firebase/app'
+import { getMessaging, getToken } from 'firebase/messaging'
 import Image from 'next/image'
 import styles from './page.module.css'
-import { useInstallPwa, useSyncLogToScreen, useNotification } from './utils'
+import { useInstallPwa, useSyncLogToScreen } from './utils'
 
 
 export default function Home() {
   const { logs } = useSyncLogToScreen()
   const { handlePwaInstall } = useInstallPwa()
-  const { requestPermission, pushNotification } = useNotification()
+
+  React.useEffect(() => {
+    const firebaseConfig = {
+      apiKey: 'AIzaSyBzd0TZVhj3hOKHrVsOak2cERYijuCA_o8',
+      authDomain: 'next-pwa-test-e0b4d.firebaseapp.com',
+      projectId: 'next-pwa-test-e0b4d',
+      storageBucket: 'next-pwa-test-e0b4d.appspot.com',
+      messagingSenderId: '876598000685',
+      appId: '1:876598000685:web:f34efd0021b1d5f5c04ca4'
+    }
+    
+    // Initialize Firebase
+    const app = initializeApp(firebaseConfig)
+    const messaging = getMessaging(app)
+    getToken(messaging, {vapidKey: 'fOW7zvkCQYhBiz2-pi-PBY2wtoaWkNYJJSOYuDxsWyo'}).then((currentToken) => {
+      if (currentToken) {
+        console.log('裝置 token: ', currentToken)
+      } else {
+        // Show permission request UI
+        console.log('No registration token available. Request permission to generate one.')
+        // ...
+      }
+    }).catch((err) => {
+      console.log('註冊 firebase sw 發生錯誤', err)
+      // ...
+    })    
+  }, [])
 
   return (
     <main className={styles.main}>
@@ -76,7 +104,7 @@ export default function Home() {
 
         <button
           className={styles.card}
-          onClick={() => pushNotification()}
+          // onClick={() => pushNotification()}
         >
           <h2>
             顯示通知
