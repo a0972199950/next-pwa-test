@@ -39,9 +39,16 @@ export default function Home() {
       // ...
     })
 
-    onMessage(messaging, (payload) => {
+    onMessage(messaging, (payload: any) => {
       console.log('Message received. ', payload)
-      // ...
+      // Customize notification here
+      const notificationTitle = payload.notification.title
+      const notificationOptions = {
+        body: payload.notification.body,
+        icon: '/icons/icon-512x512.png'
+      }
+    
+      new Notification(notificationTitle, notificationOptions)
     })
   }, [])
 
