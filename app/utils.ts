@@ -67,7 +67,14 @@ export const useSyncLogToScreen = () => {
 
 export const useNotification = () => {
   React.useEffect(() => {
-    
+    if('serviceWorker' in navigator) {
+      try {
+        navigator.serviceWorker.register('/notification.js')
+        console.log('註冊 service worker notification 成功')
+      } catch (e) {
+        console.log('註冊 service worker notification 失敗')
+      }
+    }
   }, [])
   
   const requestPermission = () => {
@@ -86,11 +93,14 @@ export const useNotification = () => {
   const pushNotification = () => {
     console.log('pushNotification')
     
-    try {
-      new Notification('我是一則通知')
-      console.log('彈出通知成功')
-    } catch {
-      console.log('彈出通知失敗')
+    if ('serviceWorker' in navigator && 'MessageChannel' in window) {
+      navigator.serviceWorker.ready.then((registration) => {
+        registration?.active?.postMessage('trigger-notification')
+      })
+
+      console.log('service worker notification 支援')
+    } else {
+      console.log('service worker notification 不支援')
     }
   }
 
