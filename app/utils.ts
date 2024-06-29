@@ -65,18 +65,7 @@ export const useSyncLogToScreen = () => {
   return { logs, pushLog }
 }
 
-export const useNotification = () => {
-  React.useEffect(() => {
-    if('serviceWorker' in navigator) {
-      try {
-        navigator.serviceWorker.register('/notification.js')
-        console.log('註冊 service worker notification 成功')
-      } catch (e) {
-        console.log('註冊 service worker notification 失敗')
-      }
-    }
-  }, [])
-  
+export const useNotification = () => {  
   const requestPermission = () => {
     console.log('requestPermission')
 
@@ -90,19 +79,5 @@ export const useNotification = () => {
     })
   }
 
-  const pushNotification = () => {
-    console.log('pushNotification')
-    
-    if ('serviceWorker' in navigator && 'MessageChannel' in window) {
-      navigator.serviceWorker.ready.then((registration) => {
-        registration?.active?.postMessage('trigger-notification')
-      })
-
-      console.log('service worker notification 支援')
-    } else {
-      console.log('service worker notification 不支援')
-    }
-  }
-
-  return { requestPermission, pushNotification }
+  return { requestPermission }
 }
