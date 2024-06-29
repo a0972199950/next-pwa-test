@@ -2,63 +2,13 @@
 import * as React from 'react'
 import Image from 'next/image'
 import styles from './page.module.css'
+import { useInstallPwa, useSyncLogToScreen, useNotification } from './utils'
 
-interface BeforeInstallPromptEvent extends Event {
-  readonly platforms: string[];
-  readonly userChoice: Promise<{
-    outcome: 'accepted' | 'dismissed';
-    platform: string;
-  }>;
-  prompt(): Promise<void>;
-}
 
 export default function Home() {
-  const [deferredPrompt , setDeferredPrompt] = React.useState<null | BeforeInstallPromptEvent>(null)
-
-  React.useLayoutEffect(() => {
-    window.addEventListener('beforeinstallprompt', (e: Event) => {
-      e.preventDefault()
-      setDeferredPrompt(e as BeforeInstallPromptEvent)
-    })
-  }, [])
-
-  const handlePwaInstall = () => {
-    console.log('點擊安裝 PWA')
-
-    if (!deferredPrompt) {
-      console.log('A2HS 尚未出現' + Date.now())
-      return
-    }
-
-    deferredPrompt.prompt()
-
-    deferredPrompt.userChoice.then((choiceResult) => {
-      if (choiceResult.outcome === 'accepted') {
-        console.log('使用者同意安裝 PWA')
-      } else {
-        console.log('使用者拒絕安裝 PWA')
-      }
-      
-      setDeferredPrompt(null)
-    })
-  }
-
-  const [logs, setLogs] = React.useState<string[]>(['初始化完成'])
-
-  const pushLog = (...msgs: string[]) => {
-    setLogs((val) => ([
-      ...val,
-      ...msgs.map(msg => `[${Date.now()}] ${msg}`)
-    ]))
-  }
-
-  React.useEffect(() => {
-    const _log = console.log
-    console.log = (...msgs) => {
-      pushLog(...msgs)
-      _log(...msgs)
-    }
-  }, [])
+  const { logs } = useSyncLogToScreen()
+  const { handlePwaInstall } = useInstallPwa()
+  const { requestPermission, pushNotification } = useNotification()
 
   return (
     <main className={styles.main}>
@@ -115,29 +65,23 @@ export default function Home() {
           </h2>
         </button>
 
-        <a
-          href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
+        <button
           className={styles.card}
-          target="_blank"
-          rel="noopener noreferrer"
+          onClick={() => requestPermission()}
         >
           <h2>
-            Learn <span>-&gt;</span>
+            開啟通知權限
           </h2>
-          <p>Learn about Next.js in an interactive course with&nbsp;quizzes!</p>
-        </a>
+        </button>
 
-        <a
-          href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
+        <button
           className={styles.card}
-          target="_blank"
-          rel="noopener noreferrer"
+          onClick={() => pushNotification()}
         >
           <h2>
-            Templates <span>-&gt;</span>
+            顯示通知
           </h2>
-          <p>Explore starter templates for Next.js.</p>
-        </a>
+        </button>
 
         <a
           href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
