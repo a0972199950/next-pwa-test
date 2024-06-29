@@ -3,13 +3,14 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "dev": "next dev --experimental-https --experimental-https-key ./certs/ssl-key.pem --experimental-https-cert ./certs/ssl.pem",
+    "dev": "next dev",
     "build": "next build",
     "start": "next start",
     "lint": "next lint"
   },
   "dependencies": {
     "firebase": "^10.12.2",
+    "firebase-admin": "^12.2.0",
     "next": "14.2.4",
     "next-pwa": "^5.6.0",
     "react": "^18",
