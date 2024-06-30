@@ -2,7 +2,7 @@ self.addEventListener('notificationclick', (event) => {
   
   if (event.action === 'AGREE') {
     event.waitUntil(
-      clients.openWindow('/')
+      clients.openWindow('https://next-pwa-test-sage.vercel.app')
     )
   }
 
