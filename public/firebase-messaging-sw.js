@@ -14,8 +14,19 @@ firebase.initializeApp(firebaseConfig)
 const messaging = firebase.messaging()
 
 messaging.onBackgroundMessage((payload) => {
-  console.log('[firebase-messaging-sw.js] Received background message ', payload)
-  const notificationTitle = payload.notification.title
+  console.log('收到 firebase 背景訊息 ', payload)
+  const notificationTitle = '[fb bg msg]' + payload.notification.title
+  const notificationOptions = {
+    body: payload.notification.body,
+    icon: '/icons/icon-512x512.png'
+  }
+
+  self.registration.showNotification(notificationTitle, notificationOptions)
+})
+
+messaging.onMessage((payload) => {
+  console.log('收到 firebase 前景訊息 ', payload)
+  const notificationTitle = '[fb fg msg]' + payload.notification.title
   const notificationOptions = {
     body: payload.notification.body,
     icon: '/icons/icon-512x512.png'
