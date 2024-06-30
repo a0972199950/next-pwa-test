@@ -16,7 +16,7 @@ const messaging = firebase.messaging()
 messaging.onBackgroundMessage((payload) => {
   console.log('收到 firebase 背景訊息 ', payload)
 
-  self.registration.showNotification(payload.title, payload.options)
+  self.registration.showNotification(payload.data.title, JSON.parse(payload.data.options))
 
   // 检查是否已经显示了相同的通知
   // self.registration.getNotifications().then((notifications) => {
