@@ -23,14 +23,3 @@ messaging.onBackgroundMessage((payload) => {
 
   self.registration.showNotification(notificationTitle, notificationOptions)
 })
-
-messaging.onMessage((payload) => {
-  console.log('收到 firebase 前景訊息 ', payload)
-  const notificationTitle = '[fb fg msg]' + payload.notification.title
-  const notificationOptions = {
-    body: payload.notification.body,
-    icon: '/icons/icon-512x512.png'
-  }
-
-  self.registration.showNotification(notificationTitle, notificationOptions)
-})

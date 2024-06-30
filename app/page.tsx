@@ -40,15 +40,22 @@ export default function Home() {
     })
 
     onMessage(messaging, (payload: any) => {
-      console.log('Message received. ', payload)
+      console.log('收到 firebase 前景訊息 ', payload)
       // Customize notification here
-      const notificationTitle = payload.notification.title
+      const notificationTitle = '[fb fg msg]' + payload.notification.title
       const notificationOptions = {
         body: payload.notification.body,
         icon: '/icons/icon-512x512.png'
       }
     
-      new Notification(notificationTitle, notificationOptions)
+      navigator.serviceWorker.getRegistration().then(registration => {
+        if (registration) {
+          console.log('找到 sw registration')
+          registration.showNotification(notificationTitle, notificationOptions)
+        } else {
+          console.log('找不到 sw registration')
+        }
+      })
     })
   }, [])
 
