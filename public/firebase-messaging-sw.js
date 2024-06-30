@@ -1,3 +1,10 @@
+self.addEventListener('notificationclick', (event) => {
+  event.notification.close()
+  if (event.action === 'AGREE') {
+    clients.openWindow('/')
+  }
+})
+
 importScripts('https://www.gstatic.com/firebasejs/10.1.0/firebase-app-compat.js')
 importScripts('https://www.gstatic.com/firebasejs/10.1.0/firebase-messaging-compat.js')
 
@@ -17,17 +24,4 @@ messaging.onBackgroundMessage((payload) => {
   console.log('收到 firebase 背景訊息 ', payload)
 
   self.registration.showNotification(payload.data.title, JSON.parse(payload.data.options))
-
-  // 检查是否已经显示了相同的通知
-  // self.registration.getNotifications().then((notifications) => {
-  //   if (notifications.some(notification => notification.icon)) {
-  //     self.registration.showNotification(notificationTitle, notificationOptions)
-  //   }
-
-
-  //   const existingNotification = notifications.find(notification => notification.title === notificationTitle && notification.body === notificationOptions.body)
-  //   if (!existingNotification) {
-  //     self.registration.showNotification(notificationTitle, notificationOptions)
-  //   }
-  // })
 })
