@@ -1,8 +1,12 @@
 self.addEventListener('notificationclick', (event) => {
-  event.notification.close()
+  
   if (event.action === 'AGREE') {
-    clients.openWindow('/')
+    event.waitUntil(
+      clients.openWindow('/')
+    )
   }
+
+  event.notification.close()
 })
 
 importScripts('https://www.gstatic.com/firebasejs/10.1.0/firebase-app-compat.js')
