@@ -13,6 +13,7 @@ export default function Home() {
   const { requestPermission } = useNotification()
 
   React.useEffect(() => {
+    console.log('跑 useEffect')
     const firebaseConfig = {
       apiKey: 'AIzaSyBzd0TZVhj3hOKHrVsOak2cERYijuCA_o8',
       authDomain: 'next-pwa-test-e0b4d.firebaseapp.com',
