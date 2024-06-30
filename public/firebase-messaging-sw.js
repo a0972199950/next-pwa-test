@@ -1,13 +1,35 @@
-self.addEventListener('notificationclick', (event) => {
-  
-  if (event.action === 'AGREE') {
-    event.waitUntil(
-      clients.openWindow('https://next-pwa-test-sage.vercel.app')
-    )
-  }
+self.addEventListener('notificationclick', function(event) {
+  const url = 'https://next-pwa-test-sage.vercel.app'
+  event.notification.close() // Android needs explicit close.
 
-  event.notification.close()
+  event.waitUntil(
+    clients.matchAll({type: 'window'}).then( windowClients => {
+      // Check if there is already a window/tab open with the target URL
+      for (var i = 0; i < windowClients.length; i++) {
+        var client = windowClients[i]
+        // If so, just focus it.
+        if (client.url === url && 'focus' in client) {
+          return client.focus()
+        }
+      }
+      // If not, then open the target URL in a new window/tab.
+      if (clients.openWindow) {
+        return clients.openWindow(url)
+      }
+    })
+  )
 })
+
+// self.addEventListener('notificationclick', (event) => {
+  
+//   if (event.action === 'AGREE') {
+//     event.waitUntil(
+//       clients.openWindow('https://next-pwa-test-sage.vercel.app')
+//     )
+//   }
+
+//   event.notification.close()
+// })
 
 importScripts('https://www.gstatic.com/firebasejs/10.1.0/firebase-app-compat.js')
 importScripts('https://www.gstatic.com/firebasejs/10.1.0/firebase-messaging-compat.js')
