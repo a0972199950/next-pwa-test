@@ -91,6 +91,7 @@
   margin-top: 16px;
   padding: 8px;
   list-style: none;
+  word-break: break-all;
 }
 
 .logo {
@@ -136,7 +137,7 @@
   }
 
   .center {
-    padding: 8rem 0 6rem;
+    padding: 0;
   }
 
   .center::before {
