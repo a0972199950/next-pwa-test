@@ -13,15 +13,15 @@ const firebaseConfig = {
 firebase.initializeApp(firebaseConfig)
 const messaging = firebase.messaging()
 
-// messaging.onBackgroundMessage((payload) => {
-//   console.log('收到 firebase 背景訊息 ', payload)
-//   const notificationTitle = payload.notification.title
-//   const notificationOptions = {
-//     body: payload.notification.body,
-//     icon: 'icons/icon-512x512.png'
-//   }
+messaging.onBackgroundMessage((payload) => {
+  console.log('收到 firebase 背景訊息 ', payload)
+  const notificationTitle = '自定義標題'
+  const notificationOptions = {
+    body: JSON.stringify(payload),
+    icon: 'icons/icon-512x512.png'
+  }
 
-//   self.registration.showNotification(notificationTitle, notificationOptions)
+  self.registration.showNotification(notificationTitle, notificationOptions)
 
   // 检查是否已经显示了相同的通知
   // self.registration.getNotifications().then((notifications) => {
@@ -35,4 +35,4 @@ const messaging = firebase.messaging()
   //     self.registration.showNotification(notificationTitle, notificationOptions)
   //   }
   // })
-// })
+})
