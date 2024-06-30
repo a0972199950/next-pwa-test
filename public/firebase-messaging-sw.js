@@ -21,16 +21,18 @@ messaging.onBackgroundMessage((payload) => {
     icon: 'icons/icon-512x512.png'
   }
 
+  self.registration.showNotification(notificationTitle, notificationOptions)
+
   // 检查是否已经显示了相同的通知
-  self.registration.getNotifications().then((notifications) => {
-    if (notifications.some(notification => notification.icon)) {
-      self.registration.showNotification(notificationTitle, notificationOptions)
-    }
+  // self.registration.getNotifications().then((notifications) => {
+  //   if (notifications.some(notification => notification.icon)) {
+  //     self.registration.showNotification(notificationTitle, notificationOptions)
+  //   }
 
 
-    // const existingNotification = notifications.find(notification => notification.title === notificationTitle && notification.body === notificationOptions.body)
-    // if (!existingNotification) {
-    //   self.registration.showNotification(notificationTitle, notificationOptions)
-    // }
-  })
+  //   const existingNotification = notifications.find(notification => notification.title === notificationTitle && notification.body === notificationOptions.body)
+  //   if (!existingNotification) {
+  //     self.registration.showNotification(notificationTitle, notificationOptions)
+  //   }
+  // })
 })
