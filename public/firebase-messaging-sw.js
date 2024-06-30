@@ -15,13 +15,8 @@ const messaging = firebase.messaging()
 
 messaging.onBackgroundMessage((payload) => {
   console.log('收到 firebase 背景訊息 ', payload)
-  const notificationTitle = '自定義標題'
-  const notificationOptions = {
-    body: JSON.stringify(payload),
-    icon: 'icons/icon-512x512.png'
-  }
 
-  self.registration.showNotification(notificationTitle, notificationOptions)
+  self.registration.showNotification(payload.title, payload.options)
 
   // 检查是否已经显示了相同的通知
   // self.registration.getNotifications().then((notifications) => {
